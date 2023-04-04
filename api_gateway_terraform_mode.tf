@@ -38,8 +38,12 @@ resource "aws_api_gateway_deployment" "rest_api_terraform_mode_deployment" {
   stage_name = "current"
 
   depends_on = [
-    aws_api_gateway_integration.rest_api_terraform_mode_get_integration
+    aws_api_gateway_integration.rest_api_terraform_mode_get_integration,
   ]
+
+  provisioner "local-exec" {
+    command = "sleep 6"
+  }
 
   description       = "Deployed at ${timestamp()}"
   stage_description = "Deployed at ${timestamp()}"
