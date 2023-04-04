@@ -33,32 +33,12 @@ resource "aws_api_gateway_integration" "rest_api_terraform_mode_get_integration"
   }
 }
 
-resource "aws_api_gateway_method" "rest_api_terraform_mode_delete_method" {
-  rest_api_id   = aws_api_gateway_rest_api.rest_api_terraform_mode.id
-  resource_id   = aws_api_gateway_resource.rest_api_terraform_mode_second_level.id
-  http_method   = "DELETE"
-  authorization = "NONE"
-}
-
-resource "aws_api_gateway_integration" "rest_api_terraform_mode_delete_integration" {
-  rest_api_id = aws_api_gateway_rest_api.rest_api_terraform_mode.id
-  resource_id = aws_api_gateway_resource.rest_api_terraform_mode_second_level.id
-  http_method = aws_api_gateway_method.rest_api_terraform_mode_delete_method.http_method
-  type        = "MOCK"
-  request_templates = {
-    "application/json" = <<EOF
-    $input.json('$')
-    EOF
-  }
-}
-
 resource "aws_api_gateway_deployment" "rest_api_terraform_mode_deployment" {
   rest_api_id = aws_api_gateway_rest_api.rest_api_terraform_mode.id
   stage_name = "current"
 
   depends_on = [
-    aws_api_gateway_integration.rest_api_terraform_mode_get_integration,
-    aws_api_gateway_integration.rest_api_terraform_mode_delete_integration
+    aws_api_gateway_integration.rest_api_terraform_mode_get_integration
   ]
 
   description       = "Deployed at ${timestamp()}"
